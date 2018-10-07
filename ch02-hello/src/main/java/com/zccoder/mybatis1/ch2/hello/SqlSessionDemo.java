@@ -19,7 +19,7 @@ public class SqlSessionDemo {
         try {
             // 打开 SqlSession 会话
             sqlSession = MyBatisUtil.getSqlSessionFactoryByXml().openSession();
-            // some code ...
+            // some code ...    
             sqlSession.commit();
         }catch (Exception e){
             System.err.println(e.getMessage());

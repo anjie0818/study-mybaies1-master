@@ -27,6 +27,14 @@ public enum Sex {
         this.name = name;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public static Sex getSex(int id) {
         for (Sex sex : Sex.values()) {
             if (sex.id == id) {

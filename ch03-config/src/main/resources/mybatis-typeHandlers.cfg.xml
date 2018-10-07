@@ -7,11 +7,45 @@
     <!--MyBatis 的 typeHandlers 元素-->
     <!--参考官方文档地址【http://www.mybatis.org/mybatis-3/zh/configuration.html#typeHandlers】-->
 
+
+
+
+
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+    <typeAliases>
+        <package name="com.zccoder.mybatis1.ch3.config.po"/>
+        <!--【说明】使用自动扫描时，对应的 PO 类可以使用 @Alias 注解指定别名。当没有使用 @Alias 指定别名时，默认为类名首字母小写-->
+        <!--参考类【com.zccoder.mybatis1.ch3.config.po.Role】-->
+    </typeAliases>
     <typeHandlers>
         <!--注册自定义的 typeHandler-->
         <typeHandler handler="com.zccoder.mybatis1.ch3.config.MyStringTypeHandler" jdbcType="VARCHAR" javaType="string"/>
-        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.zccoder.mybatis1.ch3.config.enums.Sex"/>
+        <typeHandler handler="org.apache.ibatis.type.EnumTypeHandler" javaType="com.zccoder.mybatis1.ch3.config.enums.Sex"/>
         <typeHandler handler="com.zccoder.mybatis1.ch3.config.SexEnumTypeHandler" javaType="com.zccoder.mybatis1.ch3.config.enums.Sex"/>
     </typeHandlers>
-
+    <objectFactory type="com.zccoder.mybatis1.ch3.config.MyObjectFactory">
+        <property name="name" value="MyObjectFactory"></property>
+    </objectFactory>
+    <!--定义数据库信息，默认使用 dev 数据库构建环境-->
+    <environments default="dev">
+        <environment id="dev">
+            <!--采用 JDBC 事务管理-->
+            <transactionManager type="JDBC">
+                <property name="autoCommit" value="false"/>
+            </transactionManager>
+            <!--配置数据库链接信息-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://47.98.132.196:3306/mybatis"/>
+                <property name="username" value="root"/>
+                <property name="password" value="anjie123B"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--定义映射器-->
+    <mappers>
+        <package name="com.zccoder.mybatis1.ch3.config.mapper"/>
+    </mappers>
 </configuration>

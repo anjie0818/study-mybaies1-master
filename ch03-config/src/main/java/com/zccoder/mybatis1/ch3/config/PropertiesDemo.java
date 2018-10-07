@@ -3,6 +3,7 @@ package com.zccoder.mybatis1.ch3.config;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.type.TypeAliasRegistry;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +25,7 @@ public class PropertiesDemo {
 
     private static final Class CLASS_LOCK = PropertiesDemo.class;
     private static SqlSessionFactory sqlSessionFactory = null;
-
+    TypeAliasRegistry typeAliasRegistry;
     private void init(){
         InputStream cfgStream = null;
         Reader cfgReader = null;

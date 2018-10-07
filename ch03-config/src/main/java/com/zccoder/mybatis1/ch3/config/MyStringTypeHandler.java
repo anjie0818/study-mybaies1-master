@@ -27,27 +27,28 @@ public class MyStringTypeHandler implements TypeHandler<String> {
 
     private Logger log = Logger.getLogger(MyStringTypeHandler.class);
 
+
     @Override
-    public void setParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType) throws SQLException {
-        log.info("使用我的自定义 TypeHandler");
-        ps.setString(i,parameter);
+    public void setParameter(PreparedStatement preparedStatement, int i, String s, JdbcType jdbcType) throws SQLException {
+        log.info("A--使用我的TypeHandler:preparedStatement--"+preparedStatement+"--i:"+i+"--s:"+s+"--jdbcType:"+jdbcType);
+        preparedStatement.setString(i,s);
     }
 
     @Override
-    public String getResult(ResultSet rs, String columnName) throws SQLException {
-        log.info("使用我的自定义 TypeHandler,ResultSet列名获取字符串");
-        return rs.getString(columnName);
+    public String getResult(ResultSet resultSet, String s) throws SQLException {
+        log.info("B--使用我的TypeHandler:resultSet--"+resultSet+"--s:"+s);
+        return resultSet.getString(s);
     }
 
     @Override
-    public String getResult(ResultSet rs, int columnIndex) throws SQLException {
-        log.info("使用我的自定义 TypeHandler,ResultSet下标获取字符串");
-        return rs.getString(columnIndex);
+    public String getResult(ResultSet resultSet, int i) throws SQLException {
+        log.info("C--使用我的TypeHandler:resultSet--"+resultSet+"--i:"+i);
+        return resultSet.getString(i);
     }
 
     @Override
-    public String getResult(CallableStatement cs, int columnIndex) throws SQLException {
-        log.info("使用我的自定义 TypeHandler,CallableStatement下标获取字符串");
-        return cs.getString(columnIndex);
+    public String getResult(CallableStatement callableStatement, int i) throws SQLException {
+        log.info("D--使用我的TypeHandler:callableStatement--"+callableStatement+"--i:"+i);
+        return callableStatement.getString(i);
     }
 }
