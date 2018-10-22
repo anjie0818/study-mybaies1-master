@@ -16,6 +16,11 @@ import java.util.Date;
 @Alias("user")
 public class User implements Serializable {
     private static final long serialVersionUID = -4682594756461465431L;
+    public User() {}
+    public User(Long id, String userName) {
+        this.id = id;
+        this.userName = userName;
+    }
 
     private Long id;
     /**

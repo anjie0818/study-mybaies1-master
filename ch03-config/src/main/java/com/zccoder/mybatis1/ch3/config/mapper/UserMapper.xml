@@ -3,6 +3,10 @@
 <mapper namespace="com.zccoder.mybatis1.ch3.config.mapper.UserMapper">
 
     <resultMap id="userMap" type="com.zccoder.mybatis1.ch3.config.po.User">
+        <constructor>
+            <idArg column="id" javaType="long"></idArg>
+            <arg column="userName" javaType="string"></arg>
+        </constructor>
         <!--定义结果类型转化器标识，才能使用类型转换器-->
         <id column="id" property="id" javaType="long" jdbcType="BIGINT"/>
 
@@ -14,11 +18,10 @@
         <result column="mobile" property="mobile"/>
         <result column="note" property="note"/>
     </resultMap>
-
-    <select id="getUser" parameterType="Long" resultMap="userMap">
+    <select id="getUser" parameterType="Long" resultType="com.zccoder.mybatis1.ch3.config.po.User">
+    <!--<select id="getUser" parameterType="Long" resultType="userMap">-->
         select id,userName,cnname,birthday,sex,email,mobile,note from user where id=#{id}
     </select>
-
     <insert id="insertUser" parameterType="com.zccoder.mybatis1.ch3.config.po.User">
         insert into user(userName,cnname,birthday,sex,email,mobile,note) values (#{userName},#{cnname},#{birthday},#{sex,typeHandler=com.zccoder.mybatis1.ch3.config.SexEnumTypeHandler},#{email},#{mobile},#{note})
     </insert>
