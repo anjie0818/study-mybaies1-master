@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zccoder.mybatis1.ch4.mappers.mapper.StudentMapper">
+
+    <resultMap id="studentMap" type="Student">
+        <id column="id" property="id" />
+        <result column="cnname" property="cnname" />
+        <result column="sex" property="sex" typeHandler="com.zccoder.mybatis1.ch4.mappers.mapper.SexEnumTypeHandler"/>
+        <result column="selfcard_no" property="selfcardNo" />
+        <result column="note" property="note" />
+        <!--association传递多个参数，column中使用，隔开-->
+        <association fetchType="lazy" property="studentSelfcard" column="id" select="com.zccoder.mybatis1.ch4.mappers.mapper.StudentSelfcardMapper.findStudentSelfcardByStudentId"/>
+        <collection fetchType="lazy" property="studentLectureList" column="id" select="com.zccoder.mybatis1.ch4.mappers.mapper.StudentLectureMapper.selectStudentLectureByStudentId"/>
+        <discriminator javaType="int" column="sex">
+            <case value="1" resultMap="maleStudentMap"/>
+            <case value="2" resultMap="femaleStudentMap"/>
+        </discriminator>
+    </resultMap>
+    <!--<resultMap id="maleStudentMap" type="StudentMale" >-->
+    <resultMap  id="maleStudentMap" type="StudentMale" extends="studentMap">
+        <collection fetchType="lazy" column="id" property="studentHealthMaleList" select="com.zccoder.mybatis1.ch4.mappers.mapper.StudentHealthMaleMapper.selectStudentHealthMaleByStudentId"/>
+    </resultMap>
+    <resultMap id="femaleStudentMap" type="StudentFemale" extends="studentMap">
+        <collection fetchType="lazy" column="id" property="studentHealthFemaleList" select="com.zccoder.mybatis1.ch4.mappers.mapper.StudentHealthFemaleMapper.selectStudentHealthFemaleByStudentId"/>
+    </resultMap>
+    <select id="selectStudentById" parameterType="int" resultMap="studentMap">
+        SELECT id,cnname,sex,selfcard_no,note from t_student where id=#{id}
+    </select>
+
+    <!--插入后，自动回填JavaBean的id值-->
+    <!--keyProperty:指定主键字段-->
+    <!--useGeneratedKeys="true"：使用数据库策略生成主键-->
+    <insert id="addStudent" parameterType="Student" useGeneratedKeys="true" keyProperty="id">
+        insert into t_student(cnname, sex,selfcard_no,note) value (#{cnname},#{sex,typeHandler=com.zccoder.mybatis1.ch4.mappers.mapper.SexEnumTypeHandler},#{selfcardNo},#{note})
+    </insert>
+    <select id="findAllStudent" resultMap="studentMap2">
+        SELECT
+          s.id,
+          s.cnname,
+          s.sex,
+          s.note                                      AS snote,
+
+          if(sex = 1, shm.id, shf.id)                 AS hid,
+          if(sex = 1, shm.check_date, shf.check_date) AS check_date,
+          if(sex = 1, shm.heart, shf.heart)           AS heart,
+          if(sex = 1, shm.liver, shf.liver)           AS liver,
+          if(sex = 1, shm.spleen, shf.spleen)         AS spleen,
+          if(sex = 1, shm.lung, shf.lung)             AS lung,
+          if(sex = 1, shm.kidney, shf.kidney)         AS kidney,
+          if(sex = 1, shm.note, shf.note)             AS shnote,
+          shm.prostate,
+          shf.uterus,
+
+          ss.id                                       AS ssid,
+          ss.native                                   AS native_,
+          ss.issue_date,
+          ss.end_date,
+          ss.note                                     AS ssnote,
+
+          sl.id                                       AS slid,
+          sl.lecture_id,
+          sl.grade,
+          sl.note                                     AS slnote,
+          l.lecture_name,
+          l.note                                      AS lnote
+        FROM t_student s
+          LEFT JOIN t_student_health_male shm ON s.id = shm.student_id
+          LEFT JOIN t_student_health_female shf ON s.id = shf.student_id
+          LEFT JOIN t_student_selfcard ss ON s.id = ss.student_id
+          LEFT JOIN t_student_lecture sl ON s.id = sl.student_id
+          LEFT JOIN t_lecture l ON sl.lecture_id = l.id;
+    </select>
+    <resultMap id="studentMap2" type="Student">
+        <id column="id" property="id" />
+        <result column="cnname" property="cnname" />
+        <result column="sex" property="sex" typeHandler="com.zccoder.mybatis1.ch4.mappers.mapper.SexEnumTypeHandler"/>
+        <result column="selfcard_no" property="selfcardNo" />
+        <result column="note" property="snote" />
+
+
+
+        <association property="studentSelfcard" column="id" javaType="StudentSelfcard">
+            <result column="id" property="ssid" />
+            <result column="native" property="native_" />
+            <result column="issue_date" property="issueDate" />
+            <result column="end_date" property="endDate" />
+            <result column="note" property="ssnote" />
+        </association>
+
+
+        <collection property="studentLectureList" ofType="StudentLecture">
+            <result column="id" property="slid" />
+            <result column="lecture_id" property="lectureId" />
+            <result column="grade" property="grade" />
+            <result column="note" property="slnote" />
+            <!--association传递多个参数，column中使用，隔开-->
+            <association property="lecture" column="lecture_id" javaType="Lecture">
+                <result column="id" property="lectrue_id" />
+                <result column="lecture_name" property="lectureName" />
+                <result column="note" property="lnote" />
+            </association>
+        </collection>
+
+        <discriminator javaType="int" column="sex">
+            <case value="1" resultMap="maleStudentMap2"/>
+            <case value="2" resultMap="femaleStudentMap2"/>
+        </discriminator>
+    </resultMap>
+    <resultMap  id="maleStudentMap2" type="StudentMale" extends="studentMap">
+        <collection  property="studentHealthMaleList" ofType="StudentHealthMale">
+            <id column="hid" property="id" />
+            <result column="check_date" property="checkDate" />
+            <result column="heart" property="heart" />
+            <result column="liver" property="liver" />
+            <result column="spleen" property="spleen" />
+            <result column="lung" property="lung" />
+            <result column="kidney" property="kidney" />
+            <result column="prostate" property="prostate" />
+            <result column="note" property="shnote" />
+        </collection>
+    </resultMap>
+    <resultMap id="femaleStudentMap2" type="StudentFemale" extends="studentMap">
+        <collection  property="studentHealthFemaleList" ofType="StudentHealthFemale">
+            <id column="hid" property="id" />
+            <result column="student_id" property="studentId" />
+            <result column="check_date" property="checkDate" />
+            <result column="heart" property="heart" />
+            <result column="liver" property="liver" />
+            <result column="spleen" property="spleen" />
+            <result column="lung" property="lung" />
+            <result column="kidney" property="kidney" />
+            <result column="prostate" property="prostate" />
+            <result column="note" property="shnote" />
+        </collection>
+    </resultMap>
+    <!--<cache/>-->
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

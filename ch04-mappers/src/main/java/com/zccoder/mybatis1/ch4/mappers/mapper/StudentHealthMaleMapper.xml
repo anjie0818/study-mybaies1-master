@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zccoder.mybatis1.ch4.mappers.mapper.StudentHealthMaleMapper">
+
+    <resultMap id="studentHealthMaleMap" type="StudentHealthMale">
+        <id column="id" property="id" />
+        <result column="student_id" property="studentId" />
+        <result column="check_date" property="checkDate" />
+        <result column="heart" property="heart" />
+        <result column="liver" property="liver" />
+        <result column="spleen" property="spleen" />
+        <result column="lung" property="lung" />
+        <result column="kidney" property="kidney" />
+        <result column="prostate" property="prostate" />
+        <result column="note" property="note" />
+    </resultMap>
+    <select id="selectStudentHealthMaleByStudentId" parameterType="int" resultMap="studentHealthMaleMap">
+        SELECT id,student_id,check_date,heart,liver,spleen,lung,kidney,prostate,note from t_student_health_male where student_id=#{studentId}
+    </select>
+</mapper>

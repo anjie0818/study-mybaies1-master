@@ -193,7 +193,7 @@ resultMap定义的主要是一个结果级的映射，MyBatis现有的版本**�
  </constructor>
 ```
 ##### 使用map存储结果集
-一般而言，任何的select语句都可以使用map存储，但是map接口可读性差，更多的时候使用Pojo
+一般而言，任何的select语句都可以使用map存储， ，更多的时候使用Pojo
 ##### 使用POJO存储结果集
 ##### 级联
 

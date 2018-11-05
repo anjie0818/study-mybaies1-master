@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zccoder.mybatis1.ch4.mappers.mapper.LectureMapper">
+
+    <resultMap id="lectureMap" type="Lecture">
+        <id column="id" property="id" />
+        <result column="lecture_name" property="lectureName" />
+        <result column="note" property="note" />
+    </resultMap>
+    <select id="selectLectureById" parameterType="int" resultMap="lectureMap">
+        SELECT id,lecture_name,note from t_lecture where id=#{id}
+    </select>
+</mapper>

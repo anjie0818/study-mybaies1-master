@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zccoder.mybatis1.ch4.mappers.mapper.StudentLectureMapper">
+
+    <resultMap id="studentLectureMap" type="StudentLecture">
+        <id column="id" property="id" />
+        <result column="student_id" property="studentId" />
+        <result column="lecture_id" property="lectureId" />
+        <result column="grade" property="grade" />
+        <result column="note" property="note" />
+        <!--association传递多个参数，column中使用，隔开-->
+        <association property="lecture" column="lecture_id" select="com.zccoder.mybatis1.ch4.mappers.mapper.LectureMapper.selectLectureById"/>
+    </resultMap>
+
+    <select id="selectStudentLectureByStudentId" parameterType="int" resultMap="studentLectureMap">
+        SELECT id,student_id,lecture_id,grade,note from t_student_lecture where student_id=#{studentId}
+    </select>
+
+
+
+</mapper>

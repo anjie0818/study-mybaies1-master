@@ -20,7 +20,7 @@ public interface RoleMapper {
      * @param name
      * @return
      */
-    List<Role> findRolesByname(String name);
+    List<Role> findRolesByName(@Param("name") String name);
 
     /**
      * chose、when、otherwise

@@ -14,20 +14,11 @@ import java.io.Serializable;
 @Alias("role")
 public class Role implements Serializable {
 
-    private static final long serialVersionUID = 7347474424837359046L;
 
     private Long id;
     private String name;
     private String note;
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", note='" + note + '\'' +
-                '}';
-    }
 
     public Long getId() {
         return id;
@@ -37,11 +28,11 @@ public class Role implements Serializable {
         this.id = id;
     }
 
-    public String getname() {
+    public String getName() {
         return name;
     }
 
-    public void setname(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -51,5 +42,4 @@ public class Role implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
-    }
-}
+    }}

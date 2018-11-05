@@ -1,7 +1,9 @@
 package com.zccoder.mybatis1.ch4.mappers.po;
 
-import java.sql.Timestamp;
+import org.apache.ibatis.type.Alias;
 
+import java.sql.Timestamp;
+@Alias("StudentSelfcard")
 public class StudentSelfcard {
     private  int id;
     private  String studentId;
@@ -59,5 +61,17 @@ public class StudentSelfcard {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    @Override
+    public String toString() {
+        return "StudentSelfcard{" +
+                "id=" + id +
+                ", studentId='" + studentId + '\'' +
+                ", native_='" + native_ + '\'' +
+                ", issueDate=" + issueDate +
+                ", endDate=" + endDate +
+                ", note='" + note + '\'' +
+                '}';
     }
 }
